@@ -144,16 +144,19 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.cartChanged.next(this.items);
   }
   IsEmpty() {
-     let count = 0;
-     for (let i = 0 ; i < this.items.length ; i++ ) {
-       if (this.items[i].owner === this.loginService.CurrentUser) {
-         count++;
+     if (this.items) {
+       let count = 0;
+       for (let i = 0 ; i < this.items.length ; i++ ) {
+         if (this.items[i].owner === this.loginService.CurrentUser) {
+           count++;
+         }
        }
+       if (count === 0) {
+         return true;
+       }
+       return false;
      }
-     if (count === 0) {
-       return true;
-     }
-     return false;
+    return true;
   }
 }
 

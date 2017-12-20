@@ -50,7 +50,7 @@ export class CartService {
     this.itemsToBuy = this.getItemsToBuy();
   }
 
- addItem(item: Store) {
+  addItem(item: Store) {
     item.owner = this.loginServer.getEmail();
     console.log(item.owner);
     if (this.items === null) {
@@ -63,16 +63,19 @@ export class CartService {
       this.cartChanged.next(this.items);
     } else {
       for (this.i = 0; this.i < this.items.length; this.i++) {
-        if (this.items[this.i].name === item.name && this.items[this.i].owner === item.owner) {
+        if (this.items[this.i].name === item.name) {
           console.log(this.items[this.i].owner);
           console.log(item.owner);
-          this.items[this.i].amount++;
-          this.serverService.storeServers(this.getItems()).subscribe(
-            (response) => console.log(response),
-            (error) => console.log(error)
-          );
-          this.cartChanged.next(this.items);
-          this.exist = 1;
+          if ( this.items[this.i].owner === item.owner) {
+            this.items[this.i].amount++;
+            this.serverService.storeServers(this.getItems()).subscribe(
+              (response) => console.log(response),
+              (error) => console.log(error)
+            );
+            this.cartChanged.next(this.items);
+            this.exist = 1;
+            break;
+          }
         }
       }
       if (!this.exist) {
@@ -117,7 +120,7 @@ export class CartService {
       this.itemsToBuy = [];
     }
       for (this.i = 0; this.i < this.itemsToBuy.length; this.i++) {
-        if (this.itemsToBuy[this.i].name === item.name) {
+        if (this.itemsToBuy[this.i].name === item.name && this.itemsToBuy[this.i].owner === item.owner) {
           console.log('Exist');
           this.ex = 1;
           this.onCheckAll = 0;

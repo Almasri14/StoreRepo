@@ -87,7 +87,7 @@ export class LoginService {
     this.Admin = false;
     this.signedIn = false;
     this.CurrentUser = '';
-    this.router.navigate(['/store']);
+    // this.router.navigate(['/store']);
   }
   getUsers () {
     if (this.user !== null) {
