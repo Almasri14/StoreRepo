@@ -50,10 +50,11 @@ export class CartService {
     this.itemsToBuy = this.getItemsToBuy();
   }
 
-  addItem(item: Store) {
+ addItem(item: Store) {
+    item.owner = this.loginServer.getEmail();
+    console.log(item.owner);
     if (this.items === null) {
       this.items = [];
-      item.owner = this.loginServer.getEmail();
       this.items.push(item);
       this.serverService.storeServers(this.getItems()).subscribe(
         (response) => console.log(response),
@@ -62,9 +63,10 @@ export class CartService {
       this.cartChanged.next(this.items);
     } else {
       for (this.i = 0; this.i < this.items.length; this.i++) {
-        if (this.items[this.i].name === item.name) {
+        if (this.items[this.i].name === item.name && this.items[this.i].owner === item.owner) {
+          console.log(this.items[this.i].owner);
+          console.log(item.owner);
           this.items[this.i].amount++;
-          item.owner = this.loginServer.getEmail();
           this.serverService.storeServers(this.getItems()).subscribe(
             (response) => console.log(response),
             (error) => console.log(error)
@@ -74,7 +76,6 @@ export class CartService {
         }
       }
       if (!this.exist) {
-        item.owner = this.loginServer.getEmail();
         this.items.push(item);
         this.serverService.storeServers(this.getItems()).subscribe(
           (response) => console.log(response),
